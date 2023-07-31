@@ -1,12 +1,11 @@
-import Image from "next/image";
-import FileInput from "../components/FileInput";
-import Modal from "@/components/Modal";
+import Hero from "@/components/Hero";
+import FacesDemo from "@/components/FacesDemo";
 
 export default function Home() {
   return (
-    <div className=" flex items-center justify-center min-h-screen bg-base-300">
-      <FileInput />
-      {/* <Modal /> */}
-    </div>
+    <>
+      <Hero />
+      <FacesDemo />
+    </>
   );
 }

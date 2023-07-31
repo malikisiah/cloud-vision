@@ -38,7 +38,10 @@ export default function ImageWithBox({ imageURL, boundingBox }: ImageProps) {
   };
   return (
     <>
-      <canvas ref={canvasRef} className="max-w-3xl" />
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 h-full w-full object-cover"
+      />
     </>
   );
 }
