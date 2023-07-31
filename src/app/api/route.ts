@@ -1,8 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 export async function POST(request: NextRequest) {
   const req = await request.json();
-  const imageBytes = req.imageData;
-
   const response = await fetch(
     "https://glwb7cg5ok.execute-api.us-east-1.amazonaws.com/default/rekognition",
     {
@@ -10,7 +8,7 @@ export async function POST(request: NextRequest) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(imageBytes),
+      body: JSON.stringify({ action: req.action, image: req.image }),
     }
   );
 

@@ -1,9 +1,5 @@
 "use client";
 import { useEffect, useRef } from "react";
-type ImageProps = {
-  imageURL: string;
-  boundingBox: { Width: number; Height: number; Left: number; Top: number };
-};
 
 export default function ImageWithBox({ imageURL, boundingBox }: ImageProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -12,7 +8,7 @@ export default function ImageWithBox({ imageURL, boundingBox }: ImageProps) {
     drawBoundingBox(boundingBox);
   });
 
-  const drawBoundingBox = (box: any) => {
+  const drawBoundingBox = (box: BoundingBox) => {
     const canvas = canvasRef.current;
     if (!canvas) {
       throw new Error("Error");

@@ -16,19 +16,20 @@ export default function FileInput() {
     const postRequest = async () => {
       setLoading(true);
       const url = process.env.NEXT_PUBLIC_API_URL as string;
+      const requestBody = {
+        action: "detectFace",
+        image: imageData,
+      };
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          imageData,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
-
-      console.log(data[0].BoundingBox);
+      console.log(data);
       setBoundingBox(data[0].BoundingBox);
       setLoading(false);
     };
@@ -42,7 +43,7 @@ export default function FileInput() {
     if (!file) return;
 
     const tempURL = URL.createObjectURL(file);
-    console.log(tempURL);
+
     setImageURL(tempURL);
 
     const reader = new FileReader();
