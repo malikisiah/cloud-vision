@@ -1,24 +1,18 @@
 "use client";
-import ImageWithBox from "./ImageWithBox";
+import Image from "next/image";
 import { useState, ChangeEvent, useEffect } from "react";
 import Skeleton from "./Skeleton";
-export default function FacesDemo() {
+export default function LabelsDemo() {
   const [imageData, setImageData] = useState<string | null>(null);
-  const [imageURL, setImageURL] = useState<string>("/wallhaven-yjl8ql.jpg");
+  const [imageURL, setImageURL] = useState<string>("/wallhaven-eye92l.jpg");
   const [loading, setLoading] = useState<boolean>(false);
-  const [boundingBox, setBoundingBox] = useState<BoundingBox>({
-    Width: 0.16629301011562347,
-    Height: 0.40621066093444824,
-    Left: 0.4292609393596649,
-    Top: 0.13914936780929565,
-  });
 
   useEffect(() => {
     const postRequest = async () => {
       setLoading(true);
       const url = process.env.NEXT_PUBLIC_API_URL as string;
       const requestBody = {
-        action: "detectFace",
+        action: "detectLabel",
         image: imageData,
       };
       const response = await fetch(url, {
@@ -31,7 +25,6 @@ export default function FacesDemo() {
 
       const data = await response.json();
       console.log(data);
-      setBoundingBox(data[0].BoundingBox);
       setLoading(false);
     };
     if (imageData) {
@@ -61,22 +54,31 @@ export default function FacesDemo() {
     reader.readAsDataURL(file);
   };
   return (
-    <section className="bg-base-200 text-base-content">
+    <section className="bg-base-200 text-base-content min-h-screen">
       <div className="mx-auto max-w-screen-xl px-4 py-8 sm:py-12 sm:px-6 lg:py-16 lg:px-8 ">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
           <div className="relative h-64 overflow-hidden rounded-lg sm:h-80 lg:order-last lg:h-full">
             {loading ? (
               <Skeleton />
             ) : (
-              <ImageWithBox boundingBox={boundingBox} imageURL={imageURL} />
+              <Image
+                src={imageURL}
+                alt=""
+                width={1000}
+                height={1000}
+                className="absolute inset-0 h-full w-full object-cover"
+                quality={100}
+                priority={true}
+              />
             )}
           </div>
 
           <div className="lg:py-24">
-            <h2 className="text-3xl font-bold sm:text-4xl">Identify Faces</h2>
+            <h2 className="text-3xl font-bold sm:text-4xl">Detect Labels</h2>
 
             <p className="mt-4 h-24 ">
-              Deep learning-based visual analysis to detect faces in images.
+              It is also possible to detect labels in a given image, such as
+              glasses, objects in the background or anything else of the sort
               <br />
               Upload a jpg or png image to see for yourself!
             </p>
