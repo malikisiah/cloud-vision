@@ -1,4 +1,4 @@
-export default function Skeleton() {
+export default function ImageSkeleton() {
   return (
     <div className="flex items-center justify-center absolute inset-0 h-full w-full object-cover bg-gray-300 animate-pulse">
       <svg

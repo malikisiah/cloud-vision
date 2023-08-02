@@ -1,7 +1,7 @@
 "use client";
 import ImageWithBox from "./ImageWithBox";
 import { useState, ChangeEvent, useEffect } from "react";
-import Skeleton from "./Skeleton";
+import ImageSkeleton from "./ImageSkeleton";
 export default function FacesDemo() {
   const [imageData, setImageData] = useState<string | null>(null);
   const [imageURL, setImageURL] = useState<string>("/wallhaven-yjl8ql.jpg");
@@ -30,7 +30,6 @@ export default function FacesDemo() {
       });
 
       const data = await response.json();
-      console.log(data);
       setBoundingBox(data[0].BoundingBox);
       setLoading(false);
     };
@@ -66,7 +65,7 @@ export default function FacesDemo() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
           <div className="relative h-64 overflow-hidden rounded-lg sm:h-80 lg:order-last lg:h-full">
             {loading ? (
-              <Skeleton />
+              <ImageSkeleton />
             ) : (
               <ImageWithBox boundingBox={boundingBox} imageURL={imageURL} />
             )}

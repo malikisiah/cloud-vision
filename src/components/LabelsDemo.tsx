@@ -1,11 +1,67 @@
 "use client";
 import Image from "next/image";
 import { useState, ChangeEvent, useEffect } from "react";
-import Skeleton from "./Skeleton";
+import ImageSkeleton from "./ImageSkeleton";
+import Labels from "./Labels";
+import LabelSkeleton from "./LabelSkeleton";
 export default function LabelsDemo() {
   const [imageData, setImageData] = useState<string | null>(null);
-  const [imageURL, setImageURL] = useState<string>("/wallhaven-eye92l.jpg");
+  const [imageURL, setImageURL] = useState<string>("/wallhaven-13oeov.jpg");
   const [loading, setLoading] = useState<boolean>(false);
+  const [labels, setLabels] = useState<Labels[]>([
+    { label: "Architecture", confidence: 99.99996185302734 },
+    { label: "Building", confidence: 99.99996185302734 },
+
+    { label: "Cityscape", confidence: 99.99996185302734 },
+
+    { label: "Urban", confidence: 99.99996185302734 },
+
+    { label: "City", confidence: 99.98231506347656 },
+
+    { label: "Face", confidence: 98.53372192382812 },
+
+    { label: "Head", confidence: 98.53372192382812 },
+
+    { label: "Person", confidence: 98.53372192382812 },
+
+    { label: "Selfie", confidence: 98.53372192382812 },
+
+    { label: "Adult", confidence: 96.10157012939453 },
+
+    { label: "Male", confidence: 96.10157012939453 },
+
+    { label: "Man", confidence: 96.10157012939453 },
+
+    { label: "Clothing", confidence: 95.932373046875 },
+
+    { label: "Footwear", confidence: 95.932373046875 },
+
+    { label: "Shoe", confidence: 95.932373046875 },
+
+    { label: "Outdoors", confidence: 89.08931732177734 },
+
+    { label: "High Rise", confidence: 82.45134735107422 },
+
+    { label: "Wristwatch", confidence: 78.83476257324219 },
+
+    { label: "Indoors", confidence: 67.03498077392578 },
+
+    { label: "Office Building", confidence: 57.45750045776367 },
+
+    { label: "Metropolis", confidence: 56.87534713745117 },
+
+    { label: "Aerial View", confidence: 56.83830261230469 },
+
+    { label: "Body Part", confidence: 55.88993835449219 },
+
+    { label: "Hand", confidence: 55.88993835449219 },
+
+    { label: "Condo", confidence: 55.39098358154297 },
+
+    { label: "Housing", confidence: 55.39098358154297 },
+
+    { label: "Tower", confidence: 55.01219177246094 },
+  ]);
 
   useEffect(() => {
     const postRequest = async () => {
@@ -25,6 +81,12 @@ export default function LabelsDemo() {
 
       const data = await response.json();
       console.log(data);
+
+      const tempLabels: Labels[] = data.map((item: any) => ({
+        label: item.Name,
+        confidence: item.Confidence,
+      }));
+      setLabels(tempLabels);
       setLoading(false);
     };
     if (imageData) {
@@ -59,7 +121,7 @@ export default function LabelsDemo() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
           <div className="relative h-64 overflow-hidden rounded-lg sm:h-80 lg:order-last lg:h-full">
             {loading ? (
-              <Skeleton />
+              <ImageSkeleton />
             ) : (
               <Image
                 src={imageURL}
@@ -77,10 +139,9 @@ export default function LabelsDemo() {
             <h2 className="text-3xl font-bold sm:text-4xl">Detect Labels</h2>
 
             <p className="mt-4 h-24 ">
-              It is also possible to detect labels in a given image, such as
-              glasses, objects in the background or anything else of the sort
-              <br />
-              Upload a jpg or png image to see for yourself!
+              It is also possible to detect labels in a given image, with each
+              label given a confidence on how certain the model is that the
+              label exists in the image.
             </p>
 
             <div className="bg-base-200 pt-4">
@@ -94,6 +155,8 @@ export default function LabelsDemo() {
           </div>
         </div>
       </div>
+
+      {loading ? <LabelSkeleton labels={labels} /> : <Labels labels={labels} />}
     </section>
   );
 }
